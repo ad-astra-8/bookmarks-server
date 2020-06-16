@@ -5,14 +5,21 @@ const { bookmarks } = require('../store')
 
 const bookmarksRouter = express.Router()
 const bodyParser = express.json()
-
+const BookmarksService = require('./bookmarks-service')
+  
 
 bookmarksRouter
     .route('/bookmarks')
     .get((req, res) => {
-        res
+        // res
+        //     .json(bookmarks);
+        BookmarksService.getAllBookmarks(req.app.get('db'))
+        .then(bookmarks => {
+                    res
             .json(bookmarks);
     })
+    .catch(next)
+})
     .post(bodyParser, (req, res) => {
         // app.post('/bookmarks', (req, res) => {
         const { title, url, rating, desc } = req.body;
